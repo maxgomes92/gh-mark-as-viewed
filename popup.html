@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mark as Viewed</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #24292f;
+      background: #ffffff;
+      width: 320px;
+      padding: 16px;
+    }
+
+    h1 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      color: #57606a;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 8px;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+      color: #24292f;
+    }
+
+    textarea:focus {
+      border-color: #0969da;
+      box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15);
+    }
+
+    .hint {
+      color: #57606a;
+      font-size: 11px;
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    button {
+      flex: 1;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid;
+      transition: background 0.1s;
+    }
+
+    #mark-btn {
+      background: #1f883d;
+      border-color: rgba(31, 35, 40, 0.15);
+      color: #ffffff;
+    }
+
+    #mark-btn:hover {
+      background: #1a7f37;
+    }
+
+    #unmark-btn {
+      background: #f6f8fa;
+      border-color: #d0d7de;
+      color: #24292f;
+    }
+
+    #unmark-btn:hover {
+      background: #f3f4f6;
+    }
+
+    #status {
+      margin-top: 10px;
+      font-size: 12px;
+      min-height: 18px;
+      border-radius: 4px;
+      padding: 0 4px;
+    }
+
+    #status.success { color: #1a7f37; }
+    #status.error   { color: #cf222e; }
+    #status.info    { color: #0969da; }
+  </style>
+</head>
+<body>
+  <h1>Mark as Viewed</h1>
+  <p class="subtitle">Filter PR files by glob patterns</p>
+
+  <label for="globs">Glob patterns</label>
+  <textarea id="globs" placeholder="src/**/*.ts&#10;**/*.test.js&#10;*.md"></textarea>
+  <p class="hint">One pattern per line. Leave empty to match all files.<br>Supports <code>*</code>, <code>**</code>, and <code>?</code>.</p>
+
+  <div class="actions">
+    <button id="mark-btn">Mark as viewed</button>
+    <button id="unmark-btn">Unmark</button>
+  </div>
+
+  <div id="status"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
