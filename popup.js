@@ -96,10 +96,16 @@ function applyGlobs(patterns, action) {
     return new RegExp(regex);
   }
 
-  function matchesAny(filePath, regexes) {
-    if (regexes.length === 0) return true;
+  function matches(filePath, entries) {
     const basename = filePath.includes('/') ? filePath.split('/').pop() : filePath;
-    return regexes.some(({ re, hasSlash }) => re.test(hasSlash ? filePath : basename));
+    return entries.some(({ re, hasSlash }) => re.test(hasSlash ? filePath : basename));
+  }
+
+  function shouldInclude(filePath) {
+    // No positive patterns = match everything; negations still apply.
+    if (positive.length > 0 && !matches(filePath, positive)) return false;
+    if (matches(filePath, negative)) return false;
+    return true;
   }
 
   function findToggle(container) {
@@ -182,9 +188,12 @@ function applyGlobs(patterns, action) {
     return [];
   }
 
-  // Build regexes from patterns; track whether the pattern contains a slash
-  // so we can match slash-free patterns against the basename only.
-  const regexes = patterns.map((p) => ({ re: globToRegex(p), hasSlash: p.includes('/') }));
+  // Split into positive and negation (!) patterns; build regexes for each.
+  function buildEntry(p) {
+    return { re: globToRegex(p), hasSlash: p.includes('/') };
+  }
+  const positive = patterns.filter((p) => !p.startsWith('!')).map(buildEntry);
+  const negative = patterns.filter((p) =>  p.startsWith('!')).map((p) => buildEntry(p.slice(1)));
 
   const fileItems = collectFileItems();
 
@@ -199,7 +208,7 @@ function applyGlobs(patterns, action) {
   let clicked = 0;
 
   for (const { path, toggle } of fileItems) {
-    if (!path || !matchesAny(path, regexes)) continue;
+    if (!path || !shouldInclude(path)) continue;
     total++;
     if (!toggle) continue;
 

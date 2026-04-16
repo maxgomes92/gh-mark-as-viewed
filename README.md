@@ -35,9 +35,10 @@ The status line will report how many matched files were toggled.
 | `**/*.test.ts` | Any `.test.ts` file, at any depth |
 | `src/**` | Everything under `src/` |
 | `src/*/index.ts` | `index.ts` one level inside `src/` |
+| `!**/en.*.json` | Exclude files matching this pattern |
 | _(empty)_ | All files in the diff |
 
-Patterns without a `/` are matched against the **filename only**. Patterns containing a `/` are matched against the **full path**.
+Patterns without a `/` are matched against the **filename only**. Patterns containing a `/` are matched against the **full path**. Prefix a pattern with `!` to exclude matching files.
 
 ## Installation
 
