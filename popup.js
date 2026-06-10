@@ -62,7 +62,7 @@ unmarkBtn.addEventListener('click', () => sendAction('unmark'));
 // ---------------------------------------------------------------------------
 // This function is serialised and injected into the page — keep it self-contained.
 // ---------------------------------------------------------------------------
-function applyGlobs(patterns, action) {
+async function applyGlobs(patterns, action) {
   function globToRegex(glob) {
     let regex = '^';
     let i = 0;
@@ -194,6 +194,21 @@ function applyGlobs(patterns, action) {
   }
   const positive = patterns.filter((p) => !p.startsWith('!')).map(buildEntry);
   const negative = patterns.filter((p) =>  p.startsWith('!')).map((p) => buildEntry(p.slice(1)));
+
+  // Scroll through the page so GitHub lazy-loads all diff regions before we collect.
+  await new Promise((resolve) => {
+    const saved = window.scrollY;
+    const step = () => {
+      window.scrollBy(0, window.innerHeight * 2);
+      if (window.scrollY + window.innerHeight >= document.body.scrollHeight - 50) {
+        window.scrollTo(0, saved);
+        resolve();
+      } else {
+        setTimeout(step, 120);
+      }
+    };
+    step();
+  });
 
   const fileItems = collectFileItems();
 
