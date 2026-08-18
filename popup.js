@@ -50,9 +50,10 @@ async function sendAction(action) {
   if (result?.result?.error) {
     setStatus(result.result.error, 'error');
   } else {
-    const { clicked, total } = result.result;
+    const { clicked, total, reloading } = result.result;
     const verb = action === 'mark' ? 'Marked' : 'Unmarked';
-    setStatus(`${verb} ${clicked} of ${total} matched file(s).`, 'success');
+    const suffix = reloading ? ' Reloading for review…' : '';
+    setStatus(`${verb} ${clicked} of ${total} matched file(s).${suffix}`, 'success');
   }
 }
 
@@ -237,5 +238,21 @@ async function applyGlobs(patterns, action) {
     }
   }
 
-  return { clicked, total };
+  // After marking, set up the page for reviewing: hide viewed files and ignore
+  // whitespace. Both require a reload, so schedule it in the page (it survives
+  // the popup closing) and give the in-flight "viewed" requests time to land.
+  let reloading = false;
+  if (action === 'mark') {
+    const url = new URL(window.location.href);
+    const wanted = { 'show-viewed-files': 'false', w: '1' };
+    if (Object.entries(wanted).some(([k, v]) => url.searchParams.get(k) !== v)) {
+      for (const [k, v] of Object.entries(wanted)) url.searchParams.set(k, v);
+      reloading = true;
+      setTimeout(() => {
+        window.location.href = url.toString();
+      }, 1000);
+    }
+  }
+
+  return { clicked, total, reloading };
 }

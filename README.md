@@ -10,6 +10,7 @@ A Chrome extension that bulk-marks (or unmarks) GitHub PR files as **Viewed** us
 - Leave patterns empty to target all files in the diff
 - Works with GitHub's current and legacy PR diff UI
 - Patterns are saved between sessions
+- After marking, reloads the diff with `?show-viewed-files=false&w=1` so viewed files are hidden and whitespace changes ignored
 
 ## Usage
 
@@ -25,7 +26,7 @@ A Chrome extension that bulk-marks (or unmarks) GitHub PR files as **Viewed** us
 
 4. Click **Mark as viewed** or **Unmark**
 
-The status line will report how many matched files were toggled.
+The status line will report how many matched files were toggled. After **Mark as viewed**, the page reloads with `show-viewed-files=false` and `w=1` appended so you land on just the files left to review, with whitespace-only changes hidden. Other query params and the URL hash are preserved; the reload is skipped if both params are already set.
 
 ### Pattern rules
 
