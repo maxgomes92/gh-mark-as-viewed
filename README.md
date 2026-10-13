@@ -10,6 +10,8 @@ A Chrome extension that bulk-marks (or unmarks) GitHub PR files as **Viewed** us
 - Leave patterns empty to target all files in the diff
 - Works with GitHub's current and legacy PR diff UI
 - Patterns are saved between sessions
+- Optional visual features (toggle in the popup):
+  - **Highlight stacked PRs** — on a repo's Pull requests list, PRs in the same stack (one PR targeting another's branch) get a shared color
 - After marking, reloads the diff with `?show-viewed-files=false&w=1` so viewed files are hidden and whitespace changes ignored
 
 ## Usage

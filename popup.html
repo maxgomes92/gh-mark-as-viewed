@@ -109,6 +109,21 @@
       padding: 0 4px;
     }
 
+    .section {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid #d0d7de;
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 400;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
     #status.success { color: #1a7f37; }
     #status.error   { color: #cf222e; }
     #status.info    { color: #0969da; }
@@ -128,6 +143,15 @@
   </div>
 
   <div id="status"></div>
+
+  <div class="section">
+    <h1>Visual features</h1>
+    <label class="checkbox">
+      <input type="checkbox" data-feature="highlightStacks" />
+      Highlight stacked PRs
+    </label>
+    <p class="hint">On the Pull requests list, PRs in the same stack share a color.</p>
+  </div>
 
   <script src="popup.js"></script>
 </body>

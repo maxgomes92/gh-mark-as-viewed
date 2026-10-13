@@ -17,6 +17,27 @@ globsEl.addEventListener('input', () => {
   chrome.storage.local.set({ [STORAGE_KEY]: globsEl.value });
 });
 
+// Visual feature toggles — read live by pulls.js via storage.onChanged.
+const FEATURES_KEY = 'visual_features';
+const featureEls = document.querySelectorAll('input[data-feature]');
+
+chrome.storage.local.get(FEATURES_KEY, (result) => {
+  const features = result[FEATURES_KEY] || {};
+  featureEls.forEach((el) => {
+    el.checked = !!features[el.dataset.feature];
+  });
+});
+
+featureEls.forEach((el) => {
+  el.addEventListener('change', () => {
+    const features = {};
+    featureEls.forEach((f) => {
+      features[f.dataset.feature] = f.checked;
+    });
+    chrome.storage.local.set({ [FEATURES_KEY]: features });
+  });
+});
+
 function setStatus(msg, type = 'info') {
   statusEl.textContent = msg;
   statusEl.className = type;
