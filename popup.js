@@ -133,7 +133,9 @@ async function applyGlobs(patterns, action) {
   function findToggle(container) {
     // New GitHub UI: button with aria-pressed for "Viewed" / "Mark as viewed"
     return (
-      container.querySelector('button[aria-label="Viewed"], button[aria-label="Mark as viewed"]') ||
+      container.querySelector(
+        'button[aria-label="Viewed"], button[aria-label="Not Viewed"], button[aria-label="Mark as viewed"]'
+      ) ||
       container.querySelector('button[class*="MarkAsViewedButton"]') ||
       // Old GitHub UI: checkbox
       container.querySelector('input[type="checkbox"].js-reviewed-toggle') ||
